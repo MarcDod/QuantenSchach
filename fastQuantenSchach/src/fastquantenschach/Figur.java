@@ -84,4 +84,25 @@ public class Figur {
         }
         
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Figur other = (Figur) obj;
+        if (this.farbe != other.farbe) {
+            return false;
+        }
+        if (this.typ != other.typ) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -29,7 +29,7 @@ public class Spieler {
         quantFiguren.add(new Figur(Figur.FigurTyp.DAME, farbe));
     }
     
-    public void schmeißeFigur(Figur figur){
+    public void schmeißeFigur(Figur figur){          
         this.quantFiguren.remove(figur);
     }
 

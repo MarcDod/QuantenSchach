@@ -46,6 +46,7 @@ public class Steuerung {
                     .getColor() == aktuellerSpieler) {
                 this.figurSelected = figurenFelder[y][x];
                 this.figurSelected.anschauen(this.spieler[this.aktuellerSpieler]);
+                this.spieler[aktuellerSpieler].schmeißeFigur(figurSelected);
             }
         } else {
             figurSelected = null;
