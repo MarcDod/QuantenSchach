@@ -15,8 +15,11 @@ import java.util.Random;
 public class Spieler {
     private ArrayList<Figur> quantFiguren;
     
+    private ArrayList<Figur> geschmisseneFiguren;
+    
     public Spieler(int farbe){
         this.quantFiguren = new ArrayList<>();
+        this.geschmisseneFiguren = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             quantFiguren.add(new Figur(Figur.FigurTyp.BAUER, farbe));
         }
@@ -29,14 +32,23 @@ public class Spieler {
         quantFiguren.add(new Figur(Figur.FigurTyp.DAME, farbe));
     }
     
-    public void schmeißeFigur(Figur figur){          
+    public void deckeFigurAuf(Figur figur){          
         this.quantFiguren.remove(figur);
     }
 
-    public ArrayList<Figur> getFiguren() {
+    public void schmeisseFigur(Figur figur){
+        this.quantFiguren.remove(figur);
+        this.geschmisseneFiguren.add(figur);
+    }
+    
+    public ArrayList<Figur> getQuantFiguren() {
         return quantFiguren;
     }
-
+    
+    public ArrayList<Figur> getGeschmisseneFiguren(){
+        return this.geschmisseneFiguren;
+    }
+    
     public Figur getRandomFigur() {
         return this.quantFiguren.get(new Random().nextInt(this.quantFiguren.size()));
     }
