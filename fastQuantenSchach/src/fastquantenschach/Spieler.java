@@ -37,7 +37,8 @@ public class Spieler {
     }
 
     public void schmeisseFigur(Figur figur){
-        this.quantFiguren.remove(figur);
+        if(!figur.isQuantenStatus())
+            this.quantFiguren.remove(figur);
         this.geschmisseneFiguren.add(figur);
     }
     

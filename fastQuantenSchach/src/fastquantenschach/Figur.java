@@ -150,6 +150,7 @@ public class Figur{
         this.typ = FigurTyp.QUANT;
         this.x = x;
         this.y = y;
+        this.quantenstatus = true;
     }
 
     public Figur(FigurTyp typ, int farbe){
@@ -157,7 +158,15 @@ public class Figur{
         this.typ = typ;
     }
 
-    public void anschauen(Spieler s){
+    public void setQuantenstatus(boolean status){
+        this.quantenstatus = status;
+    }
+    
+    public boolean isQuantenStatus(){
+        return this.quantenstatus;
+    }
+    
+    public void anschauen(Spieler s){       
         this.typ = s.getRandomFigur().getType();
     }
 
