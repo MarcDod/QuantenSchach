@@ -37,9 +37,13 @@ public class Spieler {
     }
 
     public void schmeisseFigur(Figur figur){
-        if(!figur.isQuantenStatus())
+        if(figur.isQuantenStatus())
             this.quantFiguren.remove(figur);
         this.geschmisseneFiguren.add(figur);
+        for(Figur figur1 : quantFiguren){
+            System.out.println(figur1.getType().name());
+        }
+        System.out.println("\r\n");
     }
     
     public ArrayList<Figur> getQuantFiguren() {

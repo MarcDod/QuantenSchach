@@ -111,8 +111,10 @@ public class Steuerung {
                             == Figur.FIGUR_WHITE) ? Figur.FIGUR_BLACK
                                     : Figur.FIGUR_WHITE];
 
-                    this.figurenFelder[y][x].
-                            anschauen(this.spieler[this.aktuellerSpieler]);
+                    if(this.figurenFelder[y][x].isQuantenStatus()){
+                        this.figurenFelder[y][x].
+                                anschauen(this.spieler[this.aktuellerSpieler]);
+                    }
 
                     if (checkKoenigWurf(x, y)) {
                         this.endGame();
