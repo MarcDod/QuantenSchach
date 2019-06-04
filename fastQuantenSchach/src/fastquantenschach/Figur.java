@@ -125,7 +125,7 @@ public class Figur{
                     if((down ? 1 : -1) != dY){
                         return false;
                     }
-                    if(field[stand.y + dY][stand.x] != null){
+                    if(field[stand.y + dY][stand.x] != null && dX ==0){
                         return false;
                     }
                     break;
