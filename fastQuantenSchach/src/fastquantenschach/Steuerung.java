@@ -22,12 +22,16 @@ public class Steuerung {
     public Steuerung(FastQuantenSchach gui) {
         this.gui = gui;
         this.spieler = new Spieler[2];
+    }
+    
+    public void startGame(){
         this.spieler[0] = new Spieler(Figur.FIGUR_BLACK);
         this.spieler[1] = new Spieler(Figur.FIGUR_WHITE);
         this.aktuellerSpieler = Figur.FIGUR_WHITE;
+        this.figurSelected = null;
         this.figurenFelder
                 = new Figur[FastQuantenSchach.GRID_SIZE][FastQuantenSchach.GRID_SIZE];
-
+        
         for (int y = 0; y < this.figurenFelder.length; y++) {
             Figur[] figurenreihe = this.figurenFelder[y];
             for (int x = 0; x < figurenreihe.length; x++) {
@@ -37,6 +41,8 @@ public class Steuerung {
                 }
             }
         }
+        this.gui.setTextSpielerAnzeige("Weiß am Zug");
+        this.gui.setButtonText("Reset");
         this.gui.zeichneSchachBrett(this.figurenFelder);
         this.gui.zeichneGeworfeneFiguren(spieler);
     }
@@ -51,12 +57,17 @@ public class Steuerung {
                 this.spieler[aktuellerSpieler].schmeisseFigur(figurSelected);
             }
         } else {
-            figurSelected = null;
             //TODO: richtiger move -> spieler wechsel
+            figurSelected = null;
+            this.aktuellerSpieler = (aktuellerSpieler == Figur.FIGUR_WHITE)?
+                    Figur.FIGUR_BLACK:Figur.FIGUR_WHITE;
+            this.gui.setTextSpielerAnzeige(
+                    (aktuellerSpieler == Figur.FIGUR_WHITE) ?
+                            "Weiß am Zug" : "Schwarz am Zug");
+            this.gui.zeichneGeworfeneFiguren(spieler);
         }
 
         this.gui.zeichneSchachBrett(this.figurenFelder);
-        this.gui.zeichneGeworfeneFiguren(spieler);
     }
 
     

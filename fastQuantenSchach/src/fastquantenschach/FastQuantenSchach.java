@@ -142,6 +142,19 @@ public class FastQuantenSchach {
         this.menuPanel.repaint();
     }
     
+    public void resetGame(){
+        this.steuerung.startGame();
+    }
+    
+    public void setTextSpielerAnzeige(String text){
+        this.spielerAnzeige.setText(text);
+    }
+    
+    public void setButtonText(String text){
+        this.resetButton.setText(text);
+    }
+    
+    //------------------------------------------------------------------------
     public static void main(String[] args) {
         try {
             Figur.loadFigurImages("res/figuren/SchachFiguren.png");
@@ -151,8 +164,8 @@ public class FastQuantenSchach {
                     .log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+     
+    //<editor-fold defaultstate="collapsed" desc="Menu">
     private JLabel spielerAnzeige;
     private JButton resetButton;
     private JPanel geschmisseneFiguren;
@@ -172,7 +185,7 @@ public class FastQuantenSchach {
         this.resetButton.setFont(font);
         this.resetButton.setSize(d2.width / 2, 50);
         this.resetButton.setLocation(d2.width / 2, 0);
-        this.resetButton.setText("Reset");
+        this.resetButton.setText("Start");
         this.resetButton.setBackground(Color.WHITE);
         this.resetButton.setFocusPainted(false);
         this.resetButton.addActionListener(ActionEvent -> resetGame());
@@ -183,9 +196,7 @@ public class FastQuantenSchach {
         this.spielerAnzeige.setFont(font);
         this.spielerAnzeige.setLocation(0, 0);
         
-        setTextSpielerAnzeige("Weiß am Zug");
-        
-        this.geworfeneFiguren = new BufferedImage(d2.width, 
+        this.geworfeneFiguren = new BufferedImage(d2.width,
                 SCREEN_HEIGHT - this.resetButton.getHeight(),
                 BufferedImage.TYPE_INT_ARGB);
         this.gGeworfen = this.geworfeneFiguren.getGraphics();
@@ -202,20 +213,12 @@ public class FastQuantenSchach {
         //Dimension test = new Dimension(this.geworfeneFiguren.getWidth(), this.geworfeneFiguren.getHeight());
         this.geschmisseneFiguren.setSize(this.geworfeneFiguren.getWidth(), this.geworfeneFiguren.getHeight());
         this.geschmisseneFiguren.setLocation(0, this.spielerAnzeige.getHeight() + 5);
-                
-
+        
+        
         this.menuPanel.add(this.geschmisseneFiguren);
         this.menuPanel.add(this.spielerAnzeige);
         this.menuPanel.add(this.resetButton);
         
     }
-    
-    public void resetGame(){
-        
-    }
-    
-    public void setTextSpielerAnzeige(String text){
-        this.spielerAnzeige.setText(text);
-
-    }
+//</editor-fold>
 }
