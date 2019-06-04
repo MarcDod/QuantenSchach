@@ -21,7 +21,9 @@ public class Figur{
     public final static int FIGUR_WHITE = 1;
 
     private final static BufferedImage[][] FIGUR_IMAGE = new BufferedImage[2][7];
-
+    private boolean quantenstatus;
+    
+    
     private int x, y;
     
     public int getColor(){
@@ -121,6 +123,9 @@ public class Figur{
                         return false;
                     }
                     if((down ? 1 : -1) != dY){
+                        return false;
+                    }
+                    if(field[stand.y + dY][stand.x] != null){
                         return false;
                     }
                     break;
