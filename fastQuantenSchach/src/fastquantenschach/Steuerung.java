@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author Marc
  */
-public class Steuerung {
+public class Steuerung{
 
     private FastQuantenSchach gui;
     private Spieler[] spieler;
@@ -23,12 +23,12 @@ public class Steuerung {
 
     private Figur figurSelected;
 
-    public Steuerung(FastQuantenSchach gui) {
+    public Steuerung(FastQuantenSchach gui){
         this.gui = gui;
         this.spieler = new Spieler[2];
     }
 
-    public void startGame() {
+    public void startGame(){
         this.spieler[0] = new Spieler(Figur.FIGUR_BLACK);
         this.spieler[1] = new Spieler(Figur.FIGUR_WHITE);
         this.aktuellerSpieler = Figur.FIGUR_WHITE;
@@ -37,10 +37,10 @@ public class Steuerung {
         this.figurenFelder
                 = new Figur[FastQuantenSchach.GRID_SIZE][FastQuantenSchach.GRID_SIZE];
 
-        for (int y = 0; y < this.figurenFelder.length; y++) {
+        for(int y = 0; y < this.figurenFelder.length; y++){
             Figur[] figurenreihe = this.figurenFelder[y];
-            for (int x = 0; x < figurenreihe.length; x++) {
-                if (y < 2 || y > FastQuantenSchach.GRID_SIZE - 3) {
+            for(int x = 0; x < figurenreihe.length; x++){
+                if(y < 2 || y > FastQuantenSchach.GRID_SIZE - 3){
                     this.figurenFelder[y][x] = new Figur((y < 2)
                             ? Figur.FIGUR_BLACK : Figur.FIGUR_WHITE, x, y);
                 }
@@ -52,12 +52,13 @@ public class Steuerung {
         this.gui.zeichneGeworfeneFiguren(spieler);
     }
 
-    private void figurAufzeigen(int x, int y) {
-        if (this.figurenFelder[y][x] != null && this.figurenFelder[y][x]
-                .getColor() == aktuellerSpieler) {
-            if (figurenFelder[y][x].isQuantenStatus()) {
+    private void figurAufzeigen(int x, int y){
+        if(this.figurenFelder[y][x] != null && this.figurenFelder[y][x]
+                .getColor() == aktuellerSpieler){
+            if(figurenFelder[y][x].isQuantenStatus()){
                 figurenFelder[y][x].anschauen(this.spieler[aktuellerSpieler]);
-                this.spieler[aktuellerSpieler].deckeFigurAuf(figurenFelder[y][x]);
+                this.spieler[aktuellerSpieler].
+                        deckeFigurAuf(figurenFelder[y][x]);
                 figurenFelder[y][x].setQuantenstatus(false);
                 this.gui.setTextSpielerAnzeige(
                         (aktuellerSpieler == Figur.FIGUR_WHITE) ? "Weiß am Zug"
@@ -67,36 +68,36 @@ public class Steuerung {
         }
     }
 
-    private void figurAnschauen() {
-        if (this.figurSelected.isQuantenStatus()) {
+    private void figurAnschauen(){
+        if(this.figurSelected.isQuantenStatus()){
             this.figurSelected.
                     anschauen(this.spieler[this.aktuellerSpieler]);
         }
     }
 
-    private boolean checkKoenigWurf(int x, int y) {
-        if (this.figurenFelder[y][x].getType()
-                == Figur.FigurTyp.KOENIG) {
+    private boolean checkKoenigWurf(int x, int y){
+        if(this.figurenFelder[y][x].getType()
+                == Figur.FigurTyp.KOENIG){
             return true;
         }
         return false;
     }
 
-    public void mousEvent(int x, int y) { //Click Figur -> Selected + move abfrage;anzeige -> Ziel auswählen;bewegen
+    public void mousEvent(int x, int y){ //Click Figur -> Selected + move abfrage;anzeige -> Ziel auswählen;bewegen
         ArrayList<Point> laufMöglichkeiten = new ArrayList<>();
-        if (figurGeschmissen) { // Figur aufdecken wenn geschmissen wurde.
+        if(figurGeschmissen){ // Figur aufdecken wenn geschmissen wurde.
             figurAufzeigen(x, y);
-        } else if (figurSelected == null) {
-            if (this.figurenFelder[y][x] != null && this.figurenFelder[y][x]
-                    .getColor() == aktuellerSpieler) {
+        }else if(figurSelected == null){
+            if(this.figurenFelder[y][x] != null && this.figurenFelder[y][x]
+                    .getColor() == aktuellerSpieler){
                 this.figurSelected = figurenFelder[y][x];
                 figurAnschauen();
 
                 laufMöglichkeiten = this.figurSelected.getMoves(figurenFelder);
 
                 // Wenn keine Laufmöglichkeiten gegeben sind.
-                if (laufMöglichkeiten.isEmpty()) {
-                    if (this.figurSelected.isQuantenStatus()) {
+                if(laufMöglichkeiten.isEmpty()){
+                    if(this.figurSelected.isQuantenStatus()){
                         this.figurSelected.setQuantPosition();
                     }
                     this.figurSelected = null;
@@ -104,9 +105,9 @@ public class Steuerung {
                 } // 
 
             }
-        } else {
-            if (this.figurSelected.validateMove(new Point(x, y), figurenFelder)) {
-                if (this.figurenFelder[y][x] != null) {
+        }else{
+            if(this.figurSelected.validateMove(new Point(x, y), figurenFelder)){
+                if(this.figurenFelder[y][x] != null){
                     Spieler otherPlayer = this.spieler[(this.aktuellerSpieler
                             == Figur.FIGUR_WHITE) ? Figur.FIGUR_BLACK
                                     : Figur.FIGUR_WHITE];
@@ -116,7 +117,7 @@ public class Steuerung {
                                 anschauen(this.spieler[this.aktuellerSpieler]);
                     }
 
-                    if (checkKoenigWurf(x, y)) {
+                    if(checkKoenigWurf(x, y)){
                         this.endGame();
                         return;
                     }
@@ -127,13 +128,18 @@ public class Steuerung {
                 this.figurenFelder[y][x] = figurSelected;
                 this.figurenFelder[figurSelected.getY()][figurSelected.getX()] = null;
                 this.figurSelected.setPosition(x, y);
-            } else {
+                if(this.figurSelected.getType() == Figur.FigurTyp.BAUER && y
+                        == ((figurSelected.getColor() == Figur.FIGUR_WHITE) ? 0
+                        : 7)){
+                    //TODO: Bauernwechsel
+                }
+            }else{
                 return;
             }
 
             changePlayer();
             this.gui.zeichneGeworfeneFiguren(spieler);
-            if (this.figurSelected.isQuantenStatus()) {
+            if(this.figurSelected.isQuantenStatus()){
                 this.figurSelected.setQuantPosition();
             }
             figurSelected = null;
@@ -142,21 +148,21 @@ public class Steuerung {
         this.gui.zeichneSchachBrett(this.figurenFelder, laufMöglichkeiten);
     }
 
-    private void changePlayer() {
+    private void changePlayer(){
         this.aktuellerSpieler = (aktuellerSpieler == Figur.FIGUR_WHITE)
                 ? Figur.FIGUR_BLACK : Figur.FIGUR_WHITE;
-        if (this.figurGeschmissen) {
+        if(this.figurGeschmissen){
             this.gui.setTextSpielerAnzeige(
                     (aktuellerSpieler == Figur.FIGUR_WHITE) ? "Weiß Aufdecken"
                             : "Schwarz Aufdecken");
-        } else {
+        }else{
             this.gui.setTextSpielerAnzeige(
                     (aktuellerSpieler == Figur.FIGUR_WHITE) ? "Weiß am Zug"
                             : "Schwarz am Zug");
         }
     }
 
-    private void endGame() {
+    private void endGame(){
         startGame();
     }
 
