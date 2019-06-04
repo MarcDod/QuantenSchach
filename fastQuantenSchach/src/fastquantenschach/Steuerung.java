@@ -5,6 +5,9 @@
  */
 package fastquantenschach;
 
+import java.awt.Point;
+import java.util.ArrayList;
+
 /**
  *
  * @author Marc
@@ -37,37 +40,48 @@ public class Steuerung {
             for (int x = 0; x < figurenreihe.length; x++) {
                 if (y < 2 || y > FastQuantenSchach.GRID_SIZE - 3) {
                     this.figurenFelder[y][x] = new Figur((y < 2)
-                            ? Figur.FIGUR_BLACK : Figur.FIGUR_WHITE);
+                            ? Figur.FIGUR_BLACK : Figur.FIGUR_WHITE, x, y);
                 }
             }
         }
         this.gui.setTextSpielerAnzeige("Weiß am Zug");
         this.gui.setButtonText("Reset");
-        this.gui.zeichneSchachBrett(this.figurenFelder);
+        this.gui.zeichneSchachBrett(this.figurenFelder, new ArrayList<Point>());
         this.gui.zeichneGeworfeneFiguren(spieler);
     }
 
     public void mousEvent(int x, int y) { //Click Figur -> Selected + move abfrage;anzeige -> Ziel auswählen;bewegen
+        ArrayList<Point> laufMöglichkeiten = new ArrayList<>();
         if (figurSelected == null) {
             if (this.figurenFelder[y][x] != null && this.figurenFelder[y][x]
                     .getColor() == aktuellerSpieler) {
                 this.figurSelected = figurenFelder[y][x];
                 this.figurSelected.anschauen(this.spieler[this.aktuellerSpieler]);
+                
+                laufMöglichkeiten = this.figurSelected.getMoves(figurenFelder);
                 //this.spieler[aktuellerSpieler].deckeFigurAuf(figurSelected);
-                this.spieler[aktuellerSpieler].schmeisseFigur(figurSelected);
+                //this.spieler[aktuellerSpieler].schmeisseFigur(figurSelected);
+                
             }
         } else {
             //TODO: richtiger move -> spieler wechsel
-            figurSelected = null;
+            if(this.figurSelected.validateMove(new Point(x, y), figurenFelder))  {
+                this.figurenFelder[y][x] = figurSelected;
+                this.figurenFelder[figurSelected.getY()][figurSelected.getX()] = null;
+                this.figurSelected.setPosition(x, y);
+            }          
+            
             this.aktuellerSpieler = (aktuellerSpieler == Figur.FIGUR_WHITE)?
                     Figur.FIGUR_BLACK:Figur.FIGUR_WHITE;
             this.gui.setTextSpielerAnzeige(
                     (aktuellerSpieler == Figur.FIGUR_WHITE) ?
                             "Weiß am Zug" : "Schwarz am Zug");
             this.gui.zeichneGeworfeneFiguren(spieler);
+            this.figurSelected.setQuantPosition();
+            figurSelected = null;
         }
 
-        this.gui.zeichneSchachBrett(this.figurenFelder);
+        this.gui.zeichneSchachBrett(this.figurenFelder, laufMöglichkeiten);
     }
 
     

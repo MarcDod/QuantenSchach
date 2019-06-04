@@ -5,11 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -17,12 +15,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -66,6 +62,7 @@ public class FastQuantenSchach {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLayout(new FlowLayout(0, 0, 0));
         this.chessPanel = new JPanel(){
+             
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 =(Graphics2D) g.create();
@@ -105,7 +102,7 @@ public class FastQuantenSchach {
     }
     
     
-    public void zeichneSchachBrett(Figur[][] pFiguren){
+    public void zeichneSchachBrett(Figur[][] pFiguren, ArrayList<Point> laufMöglichkeiten){
         
 
         g.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -113,9 +110,11 @@ public class FastQuantenSchach {
         
         for(int y = 0; y < pFiguren.length; y++){
             for (int x = 0; x < pFiguren[y].length; x++) {
-                g.setColor(((x+y)%2 == 0) ? FIELD_COLOR_1 : FIELD_COLOR_2);
+                if(laufMöglichkeiten.contains(new Point(x, y))){
+                    g.setColor(Color.RED);
+                }else
+                    g.setColor(((x+y)%2 == 0) ? FIELD_COLOR_1 : FIELD_COLOR_2);
                 g.fillRect(x * FIELD_SIZE, y * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE);
-               
                 
                 if(pFiguren[y][x] != null){
                     pFiguren[y][x].zeicheFigur(g, x * FIELD_SIZE + FIELD_SIZE/2, y * FIELD_SIZE + FIELD_SIZE/2);
