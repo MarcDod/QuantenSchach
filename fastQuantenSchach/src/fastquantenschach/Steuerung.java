@@ -1,4 +1,4 @@
-S/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -38,6 +38,7 @@ public class Steuerung {
             }
         }
         this.gui.zeichneSchachBrett(this.figurenFelder);
+        this.gui.zeichneGeworfeneFiguren(spieler);
     }
 
     public void mousEvent(int x, int y) { //Click Figur -> Selected + move abfrage;anzeige -> Ziel auswählen;bewegen
@@ -46,7 +47,8 @@ public class Steuerung {
                     .getColor() == aktuellerSpieler) {
                 this.figurSelected = figurenFelder[y][x];
                 this.figurSelected.anschauen(this.spieler[this.aktuellerSpieler]);
-                this.spieler[aktuellerSpieler].schmeißeFigur(figurSelected);
+                //this.spieler[aktuellerSpieler].deckeFigurAuf(figurSelected);
+                this.spieler[aktuellerSpieler].schmeisseFigur(figurSelected);
             }
         } else {
             figurSelected = null;
@@ -54,6 +56,8 @@ public class Steuerung {
         }
 
         this.gui.zeichneSchachBrett(this.figurenFelder);
+        this.gui.zeichneGeworfeneFiguren(spieler);
     }
 
+    
 }
