@@ -13,11 +13,12 @@ import java.util.Random;
  * @author Marc
  */
 public class Spieler {
+
     private ArrayList<Figur> quantFiguren;
-    
+
     private ArrayList<Figur> geschmisseneFiguren;
-    
-    public Spieler(int farbe){
+
+    public Spieler(int farbe) {
         this.quantFiguren = new ArrayList<>();
         this.geschmisseneFiguren = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -31,47 +32,51 @@ public class Spieler {
         quantFiguren.add(new Figur(Figur.FigurTyp.KOENIG, farbe));
         quantFiguren.add(new Figur(Figur.FigurTyp.DAME, farbe));
     }
-    
-    public void deckeFigurAuf(Figur figur){          
+
+    public void deckeFigurAuf(Figur figur) {
         this.quantFiguren.remove(figur);
     }
 
-    public void schmeisseFigur(Figur figur){
-        if(figur.isQuantenStatus())
+    public void schmeisseFigur(Figur figur) {
+        if (figur.isQuantenStatus()) {
             this.quantFiguren.remove(figur);
+        }
         this.geschmisseneFiguren.add(figur);
 //        for(Figur figur1 : quantFiguren){
 //            System.out.println(figur1.getType().name());
 //        }
 //        System.out.println("\r\n");
     }
-    
+
     public ArrayList<Figur> getQuantFiguren() {
         return quantFiguren;
     }
-    
-    public ArrayList<Figur> getGeschmisseneFiguren(){
+
+    public ArrayList<Figur> getGeschmisseneFiguren() {
         return this.geschmisseneFiguren;
     }
-    
+
     public Figur getRandomFigur() {
-        return this.quantFiguren.get(new Random().nextInt(this.quantFiguren.size()));
+        return this.quantFiguren.get(new Random().nextInt(this.quantFiguren
+                .size()));
     }
-    
+
     /**
-     * 
+     *
      * @param field
      * @return Quant Figur if no move posiible
      */
-    public Figur getRandomFigurAbleToMove(Figur[][] field, int x, int y){
-        ArrayList<Figur> figurAbleToMove = new ArrayList<>();      
+    public Figur getRandomFigurAbleToMove(Figur[][] field, int x, int y) {
+        ArrayList<Figur> figurAbleToMove = new ArrayList<>();
         for (Figur figur : this.quantFiguren) {
             figur.setPosition(x, y);
-            if(!figur.getMoves(field).isEmpty()){
+            if (!figur.getMoves(field).isEmpty()) {
                 figurAbleToMove.add(figur);
                 //System.out.println(figur.getMoves(field) + " : " + figur.getType() + " : " + figur.getColor());
             }
         }
-        return (figurAbleToMove.isEmpty()) ? new Figur(Figur.FigurTyp.QUANT, Figur.FIGUR_BLACK) : figurAbleToMove.get(new Random().nextInt(figurAbleToMove.size()));
+        return (figurAbleToMove.isEmpty()) ? new Figur(Figur.FigurTyp.QUANT,
+                Figur.FIGUR_BLACK) : figurAbleToMove.get(new Random().nextInt(
+                figurAbleToMove.size()));
     }
 }

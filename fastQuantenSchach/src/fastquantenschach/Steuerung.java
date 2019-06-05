@@ -142,10 +142,10 @@ public class Steuerung {
 
                 // Wenn keine Laufmöglichkeiten gegeben sind.
                 if (laufMöglichkeiten.isEmpty()) {
-                    this.figurSelected.setType(5);
                     if(bauerWechsel(y, laufMöglichkeiten)){
                         return;
                     }
+                    this.figurSelected = null;
                     
                 } // 
                 
@@ -222,6 +222,7 @@ public class Steuerung {
             return false;
         }
 
+        this.spieler[aktuellerSpieler].deckeFigurAuf(figurSelected);
         this.figurSelected.setType(x);
         this.figurSelected.setQuantenstatus(false);
         this.figurenFelder[this.figurSelected.getY()][this.figurSelected.getX()]

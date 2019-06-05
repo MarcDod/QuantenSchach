@@ -146,36 +146,42 @@ public class FastQuantenSchach {
         this.menuPanel.repaint();
     }
 
-    
     public void openPawnChange() {
         this.frame.remove(this.chessPanel);
         this.frame.add(this.pawnChange, 0);
         this.frame.repaint();
     }
 
-    private int checkIfMouseOnAFigure(Point mouse){
+    private int checkIfMouseOnAFigure(Point mouse) {
         int x = 0;
-        for(int i = 1; i < 5; i++){
-            Rectangle r = new Rectangle((i - 1) * (Figur.FIGUR_SIZE + 118) + 30, (SCREEN_HEIGHT - Figur.FIGUR_SIZE) / 2, Figur.FIGUR_SIZE, Figur.FIGUR_SIZE);
-            if(r.contains(mouse)){
+        for (int i = 1; i < 5; i++) {
+            Rectangle r = new Rectangle((i - 1) * (Figur.FIGUR_SIZE + 118) + 30,
+                    (SCREEN_HEIGHT - Figur.FIGUR_SIZE) / 2, Figur.FIGUR_SIZE,
+                    Figur.FIGUR_SIZE);
+            if (r.contains(mouse)) {
                 x = i;
                 break;
             }
         }
         return x;
     }
-    
+
+    private void closePawnChange() {
+        this.frame.remove(this.pawnChange);
+        this.frame.add(this.chessPanel, 0);
+        this.frame.repaint();
+    }
+
     public void pawnEvent(MouseEvent me) {
         int x = checkIfMouseOnAFigure(new Point(me.getX(), me.getY()));
-        if (this.steuerung.pawnEvent(x)){
-            this.frame.remove(this.pawnChange);
-            this.frame.add(this.chessPanel, 0);
-            this.frame.repaint();
+        if (this.steuerung.pawnEvent(x)) {
+            closePawnChange();
         }
     }
 
     public void resetGame() {
         this.steuerung.startGame();
+        this.closePawnChange();
     }
 
     public void setTextSpielerAnzeige(String text) {
@@ -257,19 +263,22 @@ public class FastQuantenSchach {
 //</editor-fold>
 
     private void initPawnChange(Dimension d) {
-        this.pawnChange = new JPanel() {            
+        this.pawnChange = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
                 g2.drawImage(image, 0, 0, frame);
-                
-                
-                g2.fillRect(0, (SCREEN_HEIGHT - SCREEN_HEIGHT / 3) / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 3);
-                for(int i = 1; i < 5 ; i++){
-                    g2.drawImage(Figur.FIGUR_IMAGE[steuerung.getActiveSpieler()][i], (i - 1) * (Figur.FIGUR_SIZE + 118) + 30,(this.getHeight() - Figur.FIGUR_SIZE) / 2, this);
+
+                g2.fillRect(0, (SCREEN_HEIGHT - SCREEN_HEIGHT / 3) / 2,
+                        SCREEN_WIDTH, SCREEN_HEIGHT / 3);
+                for (int i = 1; i < 5; i++) {
+                    g2.drawImage(
+                            Figur.FIGUR_IMAGE[steuerung.getActiveSpieler()][i],
+                            (i - 1) * (Figur.FIGUR_SIZE + 118) + 30, (this
+                                    .getHeight() - Figur.FIGUR_SIZE) / 2, this);
                 }
-                
+
                 g2.dispose();
             }
         };
