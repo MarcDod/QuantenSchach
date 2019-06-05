@@ -40,10 +40,10 @@ public class Spieler {
         if(figur.isQuantenStatus())
             this.quantFiguren.remove(figur);
         this.geschmisseneFiguren.add(figur);
-        for(Figur figur1 : quantFiguren){
-            System.out.println(figur1.getType().name());
-        }
-        System.out.println("\r\n");
+//        for(Figur figur1 : quantFiguren){
+//            System.out.println(figur1.getType().name());
+//        }
+//        System.out.println("\r\n");
     }
     
     public ArrayList<Figur> getQuantFiguren() {
@@ -56,5 +56,22 @@ public class Spieler {
     
     public Figur getRandomFigur() {
         return this.quantFiguren.get(new Random().nextInt(this.quantFiguren.size()));
+    }
+    
+    /**
+     * 
+     * @param field
+     * @return Qunat Figur if no move posiible
+     */
+    public Figur getRandomFigurAbleToMove(Figur[][] field, int x, int y){
+        ArrayList<Figur> figurAbleToMove = new ArrayList<>();      
+        for (Figur figur : this.quantFiguren) {
+            figur.setPosition(x, y);
+            if(!figur.getMoves(field).isEmpty()){
+                figurAbleToMove.add(figur);
+                //System.out.println(figur.getMoves(field) + " : " + figur.getType() + " : " + figur.getColor());
+            }
+        }
+        return (figurAbleToMove.isEmpty()) ? new Figur(Figur.FigurTyp.QUANT, Figur.FIGUR_BLACK) : figurAbleToMove.get(new Random().nextInt(figurAbleToMove.size()));
     }
 }

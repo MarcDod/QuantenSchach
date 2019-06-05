@@ -35,7 +35,7 @@ public class Figur{
     }
 
     public enum FigurTyp{
-        DAME("Dame"), KOENIG("König"), TURM("Turm"), LAUEFER("Läufer"),
+        KOENIG("König"), DAME("Dame"), TURM("Turm"), LAUEFER("Läufer"),
         SPIRNGER("Springer"), BAUER("Bauer"), QUANT("Quant");
 
         private String name;
@@ -168,6 +168,16 @@ public class Figur{
     
     public void anschauen(Spieler s){       
         this.typ = s.getRandomFigur().getType();
+    }
+    
+    /**
+     * Set Quant type if no move availible
+     * @param s
+     * @param field 
+     */
+    public void anschauenNurBewegungsFaehig(Spieler s, Figur[][] field){
+        this.typ = s.getRandomFigurAbleToMove(field, x, y).getType();
+        //System.out.println(typ);
     }
 
     public ArrayList<Point> getMoves(Figur[][] field){
