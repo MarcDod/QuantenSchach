@@ -52,7 +52,7 @@ public class Steuerung {
         this.gui.zeichneGeworfeneFiguren(spieler);
     }
 
-    private void figurAufzeigen(int x, int y) { 
+    private void figurAufzeigen(int x, int y) {
 
         if (this.figurenFelder[y][x] != null && this.figurenFelder[y][x]
                 .getColor() == aktuellerSpieler) {
@@ -66,8 +66,7 @@ public class Steuerung {
         }
     }
 
-    
-    private boolean checkNoQuant(int player){
+    private boolean checkNoQuant(int player) {
         boolean noQuant = true;
 
         for (Figur[] figuren : this.figurenFelder) {
@@ -81,10 +80,10 @@ public class Steuerung {
                 }
             }
         }
-        
+
         return noQuant;
     }
-    
+
     private void aufzeigenBeendet() {
         this.gui.setTextSpielerAnzeige(
                 (aktuellerSpieler == Figur.FIGUR_WHITE) ? "Weiß am Zug"
@@ -118,6 +117,18 @@ public class Steuerung {
                 : this.figurSelected.getMoves(figurenFelder);
     }
 
+    private boolean bauerWechsel(int y, ArrayList<Point> laufMöglichkeiten) {
+        if (this.figurSelected.getType() == Figur.FigurTyp.BAUER && y
+                == ((figurSelected.getColor() == Figur.FIGUR_WHITE) ? 0
+                : 7)) {
+            //TODO: Bauernwechsel
+            this.gui.zeichneSchachBrett(this.figurenFelder, laufMöglichkeiten);
+            this.gui.openPawnChange();
+            return true;
+        }
+        return false;
+    }
+
     public void mousEvent(int x, int y) { //Click Figur -> Selected + move abfrage;anzeige -> Ziel auswählen;bewegen
         ArrayList<Point> laufMöglichkeiten = new ArrayList<>();
         if (figurGeschmissen) { // Figur aufdecken wenn geschmissen wurde.
@@ -131,13 +142,13 @@ public class Steuerung {
 
                 // Wenn keine Laufmöglichkeiten gegeben sind.
                 if (laufMöglichkeiten.isEmpty()) {
-                    if (this.figurSelected.isQuantenStatus()) {
-                        this.figurSelected.setQuantPosition();
+                    this.figurSelected.setType(5);
+                    if(bauerWechsel(y, laufMöglichkeiten)){
+                        return;
                     }
-                    this.figurSelected = null;
-                    return;
+                    
                 } // 
-
+                
             }
         } else {
             if (this.figurSelected.validateMove(new Point(x, y), figurenFelder)) {
@@ -149,8 +160,9 @@ public class Steuerung {
                     if (this.figurenFelder[y][x].isQuantenStatus()) {
                         this.figurenFelder[y][x].
                                 anschauen(this.spieler[(this.aktuellerSpieler
-                            == Figur.FIGUR_WHITE) ? Figur.FIGUR_BLACK
-                                    : Figur.FIGUR_WHITE]);
+                                        == Figur.FIGUR_WHITE)
+                                                ? Figur.FIGUR_BLACK
+                                                : Figur.FIGUR_WHITE]);
                     }
 
                     if (checkKoenigWurf(x, y)) {
@@ -168,13 +180,10 @@ public class Steuerung {
                         = null;
                 this.figurSelected.setPosition(x, y);
 
-                if(this.figurSelected.getType() == Figur.FigurTyp.BAUER && y
-                        == ((figurSelected.getColor() == Figur.FIGUR_WHITE) ? 0
-                        : 7)){
-                    //TODO: Bauernwechsel
-                    System.out.println("hallo");
+                if (bauerWechsel(y, laufMöglichkeiten)) {
+                    return;
                 }
-            }else {
+            } else {
                 return;
             }
 
@@ -201,6 +210,30 @@ public class Steuerung {
                     (aktuellerSpieler == Figur.FIGUR_WHITE) ? "Weiß am Zug"
                             : "Schwarz am Zug");
         }
+    }
+
+    /**
+     *
+     * @param x if 0 return false else true
+     * @return
+     */
+    public boolean pawnEvent(int x) {
+        if (x == 0) {
+            return false;
+        }
+
+        this.figurSelected.setType(x);
+        this.figurSelected.setQuantenstatus(false);
+        this.figurenFelder[this.figurSelected.getY()][this.figurSelected.getX()]
+                = figurSelected;
+        figurSelected = null;
+        changePlayer();
+        this.gui.zeichneSchachBrett(this.figurenFelder, new ArrayList<>());
+        return true;
+    }
+
+    public int getActiveSpieler() {
+        return this.aktuellerSpieler;
     }
 
     private void endGame() {

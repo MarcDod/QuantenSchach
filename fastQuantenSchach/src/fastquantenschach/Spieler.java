@@ -61,7 +61,7 @@ public class Spieler {
     /**
      * 
      * @param field
-     * @return Qunat Figur if no move posiible
+     * @return Quant Figur if no move posiible
      */
     public Figur getRandomFigurAbleToMove(Figur[][] field, int x, int y){
         ArrayList<Figur> figurAbleToMove = new ArrayList<>();      
