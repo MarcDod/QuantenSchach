@@ -76,10 +76,13 @@ public class FastQuantenSchach {
         this.chessPanel.setPreferredSize(d);
         this.chessPanel.setMinimumSize(d);
         this.chessPanel.setLayout(null);
+        this.chessPanel.setEnabled(false);
         this.chessPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
-                mouseEvent(me);
+                if(chessPanel.isEnabled()){
+                    mouseEvent(me);
+                }
             }
             
         });
@@ -142,6 +145,7 @@ public class FastQuantenSchach {
     }
     
     public void resetGame(){
+        this.chessPanel.setEnabled(true);
         this.steuerung.startGame();
     }
     
